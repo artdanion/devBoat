@@ -26,15 +26,15 @@ void setup()
   PS4.begin("dc:a2:66:97:fc:92");
   Serial.println("Ready.");
 
-  ledcAttachPin(in0, 0);
-  ledcAttachPin(in1, 1);
-  ledcAttachPin(in2, 2);
-  ledcAttachPin(in3, 3);
-
   ledcSetup(0, 20000, 8);
   ledcSetup(1, 20000, 8);
   ledcSetup(2, 20000, 8);
   ledcSetup(3, 20000, 8);
+
+  ledcAttachPin(in0, 0);
+  ledcAttachPin(in1, 1);
+  ledcAttachPin(in2, 2);
+  ledcAttachPin(in3, 3);
 }
 
 void loop()
@@ -106,21 +106,20 @@ void loop()
 
     if (vor)
     {
-      ledcWrite(0, speedRout);
       ledcWrite(1, 0);
-
-      ledcWrite(2, speedLout);
+      ledcWrite(0, speedRout);
+      
       ledcWrite(3, 0);
+      ledcWrite(2, speedLout);
     }
     else
     {
-      ledcWrite(1, speedRout);
       ledcWrite(0, 0);
-
-      ledcWrite(3, speedLout);
+      ledcWrite(1, speedRout);
+      
       ledcWrite(2, 0);
+      ledcWrite(3, speedLout);
     }
-
     delay(100);
   }
 }
