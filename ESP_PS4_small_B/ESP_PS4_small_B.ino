@@ -1,7 +1,9 @@
-#include <TinyPICO.h>
-#include <PS4Controller.h>
+// Uses DRV8835 +2 DC motors on a TinyPICO ESP32 board
 
-TinyPICO tp = TinyPICO();
+#include <TinyPICO.h>           // can be ignored on other ESP32 boards
+#include <PS4Controller.h>      // e.g. https://github.com/aed3/PS4-esp32
+
+TinyPICO tp = TinyPICO();     // can be ignored on other ESP32 boards
 
 bool right = 0;
 bool left = 0;
@@ -23,7 +25,7 @@ int in3 = 33;
 void setup()
 {
   Serial.begin(115200);
-  PS4.begin("dc:a2:66:97:fc:92");
+  PS4.begin("dc:a2:66:97:fc:92");       // enter your PS4 Controller MAC address
   Serial.println("Ready.");
 
   ledcSetup(0, 20000, 8);
@@ -39,10 +41,8 @@ void setup()
 
 void loop()
 {
-  // Below has all accessible outputs from the controller
   if (PS4.isConnected()) {
-    tp.DotStar_CycleColor(25);
-
+    tp.DotStar_CycleColor(25);        // can be ignored on other ESP32 boards
 
     speedR = 0;
     speedL = 0;
@@ -66,6 +66,15 @@ void loop()
 
       Serial.print("Stick R: ");
       Serial.println(PS4.data.analog.stick.ry, DEC);
+    }
+
+    if (speedR < 5 && speedR > -5){
+      
+      ledcWrite(0, 0);
+      ledcWrite(1, 0);
+      
+      ledcWrite(2, 0);
+      ledcWrite(3, 0);      
     }
 
     if ( PS4.event.analog_move.stick.lx ) {
